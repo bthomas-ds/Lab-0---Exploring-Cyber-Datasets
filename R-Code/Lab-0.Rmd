@@ -1,0 +1,46 @@
+---
+title: "Lab 0 - Exploring a New Cyber Dataset"
+output: html_notebook
+---
+#Background
+Your analysis supervisor has given you a data file and ask you to review the file for anything interesting. This is a new data product customer and little is known about the structure. Your first task is to load the file, conduct data cleaning, and then display a sample of the data.
+
+#Acquiring the Dataset
+In real life, your team should have acquired the dataset from a data product customer already. For the lab we will be working with a dataset from website SecRepo [^1]. This website is a set of links to security related datasets that are mostly under the Creative Commons [^2] with exceptions. Cyber datasets can be very large and for that reason, many administrators compress the file to save disk space and transmission time when copying the file. We have two methods of accessing the file and you should try both methods. Firstly, you should try reading the file directly from the web link. This method works fine for work environments where you know that you will have Internet access. In many cases you may wish to have the file locally so you can work on the dataset without the need to connect to the network. You may need to consider the sensitivity of having a file locally. The second method we will use is downloading the file into a local folder. This gives the analyst the ability to disconnect from the network. 
+
+
+## Excercise 1
+Run the code below and see if R will read the file.
+```{r}
+# Method 1a - Retrieve the data from a web link and store in a variable
+#Clean up the environment
+rm(list=ls())
+ds1 <- read.table('http://www.secrepo.com/squid/access.log.gz', header = TRUE)
+
+
+```
+R throws an error stating that file contains embedded nulls. Let us example the read.table URL. The URI that we are attempting to read actually has a .gz file extension. We will need use the R function gzfile to open a connection to the gz file. We can then read connection using read.table. This will present another problem in getting the data. Line 82,947 does not have ten elements in the row. th
+
+```{r}
+# Method 1b - Retrieve the data from a web link and store in a variable
+#Clean up the environment
+rm(list=ls())
+setwd('/home/bthomas/Documents/Lab 0 - Plotting Activity/Data')
+ds1 <- gzfile('access.log.gz')
+ds1.table <- read.table('~/Documents/Lab 0 - Plotting Activity/Data/access.log', fill = TRUE)
+```
+
+
+
+
+
+The website description states that the file is a 24 MB compressed file that is ~200 MB uncompressed.
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+#Endnotes
+[^1]: http://www.secrepo.com/
+[^2]: https://creativecommons.org/licenses/by/4.0/
