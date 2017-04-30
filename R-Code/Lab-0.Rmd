@@ -2,34 +2,53 @@
 title: "Lab 0 - Exploring a New Cyber Dataset"
 output: html_notebook
 ---
+#Skills Needed
++ Basic R language skills
++ Ability to conduct an exploratory analysis
+
 #Background
 Your analysis supervisor has given you a data file and ask you to review the file for anything interesting. This is a new data product customer and little is known about the structure. Your first task is to load the file, conduct data cleaning, and then display a sample of the data.
 
 #Acquiring the Dataset
-In real life, your team should have acquired the dataset from a data product customer already. For the lab we will be working with a dataset from website SecRepo [^1]. This website is a set of links to security related datasets that are mostly under the Creative Commons [^2] with exceptions. Cyber datasets can be very large and for that reason, many administrators compress the file to save disk space and transmission time when copying the file. We have two methods of accessing the file and you should try both methods. Firstly, you should try reading the file directly from the web link. This method works fine for work environments where you know that you will have Internet access. In many cases you may wish to have the file locally so you can work on the dataset without the need to connect to the network. You may need to consider the sensitivity of having a file locally. The second method we will use is downloading the file into a local folder. This gives the analyst the ability to disconnect from the network. 
+In real life, your team should have acquired the dataset from a data product customer already or they may hand your a CD or USB storage device. For this lab we will be working with a dataset from SecRepo website [^1]. This website hosts a set of links to security related datasets that are mostly under the Creative Commons [^2] with some exceptions. 
 
+Cyber datasets can be very large and for that reason, many administrators compress the file to save disk space and transmission time when copying the file. We will discuss two methods for accessing a file and you should try both methods as these methods will cover accessing a weblink or a file stored on media. 
+
+##Methods for accessing datasets in this lab include:  
++ Download the dataset from [SecRepo](http://www.secrepo.com/squid/access.log.gz) and save it to your local drive. This provides the analyst with the flexibility to disconnect from the network or edit file to correct data collection errors. Cyber data is captured by devices and programs that sometimes emit garbage lines that is . This is the case with the lab dataset. 
++ Read the file from a weblink. We will read the file from the weblink after we understand what is in the file and the adjustments that we will need to make to the dataset to allow it to be read into R.
+
+While this part of the lab may seem tedious, a 2016 data scientist Crowd Flower survey indicates that the bulk of the data scientist day is spent cleaning and organizing data with collecting data as a close second [^3]. The exercises in this lab will walk you through the errors you will receive and how to mitigate the errors.
 
 ## Excercise 1
-Run the code below and see if R will read the file.
+Before we run, download the file and store it locally on your machine [Download file](http://www.secrepo.com/squid/access.log.gz). A work horse function is read.table but the compressed file will not be able to be read. 
+
+Notice the errors that are output after the code block.
 ```{r}
 # Method 1a - Retrieve the data from a web link and store in a variable
 #Clean up the environment
 rm(list=ls())
 ds1 <- read.table('http://www.secrepo.com/squid/access.log.gz', header = TRUE)
-
-
 ```
-R throws an error stating that file contains embedded nulls. Let us example the read.table URL. The URI that we are attempting to read actually has a .gz file extension. We will need use the R function gzfile to open a connection to the gz file. We can then read connection using read.table. This will present another problem in getting the data. Line 82,947 does not have ten elements in the row. th
+R throws an error stating that file contains embedded nulls. The problem is not the nulls as the file type is a gzip compressed file. You can determine that it is a compressed file as file ends in .gz. We will need use the R function gzfile to open a connection to the gz file. We can then read connection using read.table. This will present another problem in getting the data. Line 82,947 does not have ten elements in the row. You can open the file in your favorite text editor and read the line.
+
+image ![](/home/bthomas/Pictures/Screenshot from 2017-04-30 17-22-38.png)
+Notice how alphanumerics flow down the left side of the page with whitespace delineating columns. Line 82947 has a burst of characters. In the field in may be essential to correct every line of a file. In this case you would contact your subject matter expert and ask them to interpete the line for you.
+
 
 ```{r}
+
 # Method 1b - Retrieve the data from a web link and store in a variable
 #Clean up the environment
 rm(list=ls())
 setwd('/home/bthomas/Documents/Lab 0 - Plotting Activity/Data')
 ds1 <- gzfile('access.log.gz')
-ds1.table <- read.table('~/Documents/Lab 0 - Plotting Activity/Data/access.log', fill = TRUE)
+# ds1.table <- read.table('~/Documents/Lab 0 - Plotting Activity/Data/access.log', fill = TRUE)
+ds1.table <- read.table(ds1, fill = TRUE, stringsAsFactors = FALSE)
+`colnames<-`(ds1.table, c("time", "elapsed", "remotehost", "code/status", "bytes", "method", "URL", "rfc931", "peerstatus/peerhost", "type"))
+head(ds1.table)
 ```
-
+When we read the table, V# is assigned to each row where # is a number. The Squid documentation provides the 10 column names that are the default which we set using colnames. 
 
 
 
@@ -44,3 +63,4 @@ When you save the notebook, an HTML file containing the code and output will be 
 #Endnotes
 [^1]: http://www.secrepo.com/
 [^2]: https://creativecommons.org/licenses/by/4.0/
+[^3]: http://visit.crowdflower.com/rs/416-ZBE-142/images/CrowdFlower_DataScienceReport_2016.pdf
