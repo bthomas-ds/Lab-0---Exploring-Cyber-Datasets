@@ -6,6 +6,9 @@ output: html_notebook
 + Basic R language skills
 + Ability to conduct an exploratory analysis
 
+#Time Required
++ Lab and reading should be accomplished in 20 to 30 minutes.
+
 #Background
 Your analysis supervisor has given you a data file and ask you to review the file for anything interesting. This is a new data product customer and little is known about the structure. Your first task is to load the file, conduct data cleaning, and then display a sample of the data.
 
@@ -41,24 +44,20 @@ Notice how alphanumerics flow down the left side of the page with whitespace del
 # Method 1b - Retrieve the data from a web link and store in a variable
 #Clean up the environment
 rm(list=ls())
-setwd('/home/bthomas/Documents/Lab 0 - Plotting Activity/Data')
-ds1 <- gzfile('access.log.gz')
+# setwd('/home/bthomas/github/Lab-0---Exploring-Cyber-Datasets/Data')
+#root.dir <- "/home/bthomas/github/Lab-0---Exploring-Cyber-Datasets/Data"
+#knitr::opts_knit$set(root.dir = "/home/bthomas/github/Lab-0---Exploring-Cyber-Datasets/Data")
+ds1 <- gzfile('~/github/Lab-0---Exploring-Cyber-Datasets/Data/access.log.gz')
 # ds1.table <- read.table('~/Documents/Lab 0 - Plotting Activity/Data/access.log', fill = TRUE)
 ds1.table <- read.table(ds1, fill = TRUE, stringsAsFactors = FALSE)
-`colnames<-`(ds1.table, c("time", "elapsed", "remotehost", "code/status", "bytes", "method", "URL", "rfc931", "peerstatus/peerhost", "type"))
-head(ds1.table)
+colnames(ds1.table)<- c("time", "elapsed", "remotehost", "code/status", "bytes", "method", "URL", "rfc931", "peerstatus/peerhost","type")
+
+sum(is.na(ds1.table))
 ```
-When we read the table, V# is assigned to each row where # is a number. The Squid documentation provides the 10 column names that are the default which we set using colnames. 
+When we read the table, V# is assigned to each row where # is a number. The Squid documentation provides the 10 column names that are the default which we set using colnames. We could have used read.table with the Header = TRUE but the data file does not contain headers.
 
+The last line of code in this R chunk counts the number of NA's in the dataset. As a matter of practice you should count NAs in your data. Knowing the number of missing values will help the reliability of your statistics.
 
-
-
-The website description states that the file is a 24 MB compressed file that is ~200 MB uncompressed.
-
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
 
 #Endnotes
 [^1]: http://www.secrepo.com/
