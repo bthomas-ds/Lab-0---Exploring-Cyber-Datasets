@@ -58,6 +58,14 @@ When we read the table, V# is assigned to each row where # is a number. The Squi
 
 The last line of code in this R chunk counts the number of NA's in the dataset. As a matter of practice you should count NAs in your data. Knowing the number of missing values will help the reliability of your statistics.
 
+#Using TidyR to Restructure Data
+Now that we have data loaded, we need to structure the data. Tidyr (tidyr) is package with data manipulation functions. Data science [guidelines for data structure](http://tidyr.tidyverse.org/) for structure data are:
+
++ Columns -  each column represents a variable
++ Rows - each row is an observation
++ Cell - each cell in the row by column intersection is a value.
+
+Data structure is a good technique to learn as other analysis functions will demand that your data fit into the key-value pairs. 
 
 #Endnotes
 [^1]: http://www.secrepo.com/
