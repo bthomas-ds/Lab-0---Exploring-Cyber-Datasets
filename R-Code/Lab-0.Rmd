@@ -4,7 +4,6 @@ output: html_notebook
 ---
 #Skills Needed
 + Basic R language skills
-+ Ability to conduct an exploratory analysis
 
 #Time Required
 + Lab and reading should be accomplished in 20 to 30 minutes.
@@ -52,20 +51,31 @@ ds1 <- gzfile('~/github/Lab-0---Exploring-Cyber-Datasets/Data/access.log.gz')
 ds1.table <- read.table(ds1, fill = TRUE, stringsAsFactors = FALSE)
 colnames(ds1.table)<- c("time", "elapsed", "remotehost", "code/status", "bytes", "method", "URL", "rfc931", "peerstatus/peerhost","type")
 
-sum(is.na(ds1.table))
 ```
 When we read the table, V# is assigned to each row where # is a number. The Squid documentation provides the 10 column names that are the default which we set using colnames. We could have used read.table with the Header = TRUE but the data file does not contain headers.
 
 The last line of code in this R chunk counts the number of NA's in the dataset. As a matter of practice you should count NAs in your data. Knowing the number of missing values will help the reliability of your statistics.
 
 #Using TidyR to Restructure Data
-Now that we have data loaded, we need to structure the data. Tidyr (tidyr) is package with data manipulation functions. Data science [guidelines for data structure](http://tidyr.tidyverse.org/) for structure data are:
+Now that we have data loaded, we need to structure the data for analysis. Most of the R visualization packages will require a column and row order for input to the visualization function. A good place to start with structuring data is the Tidyr package. The Tidyr (tidyr) is package has data manipulation functions to make it easier. Data science [guidelines for data structure](http://tidyr.tidyverse.org/) for structure data are:
 
 + Columns -  each column represents a variable
 + Rows - each row is an observation
 + Cell - each cell in the row by column intersection is a value.
 
-Data structure is a good technique to learn as other analysis functions will demand that your data fit into the key-value pairs. 
+Data structure manipulation is a valuable technique to learn as other analysis functions will demand that your data be structured coorrectly to fit into the key-value pairs. Horizontal rows should be observations with the column as the value you are interested in analysing.
+
+```{r}
+library(astime)
+ds1.table$time <- as.POSIXct(as.numeric(ds1.table$time), origin = "1960-01-01")
+ds1.table$elapsed <- as.numeric(ds1.table$elapsed)
+ds1.table$bytes <- as.numeric(ds1.table$bytes)
+
+```
+
+
+
+
 
 #Endnotes
 [^1]: http://www.secrepo.com/
