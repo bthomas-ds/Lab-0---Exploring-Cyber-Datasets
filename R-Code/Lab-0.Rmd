@@ -1,6 +1,9 @@
 ---
 title: "Lab 0 - Exploring a New Cyber Dataset"
-output: html_notebook
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document: default
 ---
 #Skills Needed
 + Basic R language skills
@@ -66,18 +69,34 @@ Now that we have data loaded, we need to structure the data for analysis. Most o
 Data structure manipulation is a valuable technique to learn as other analysis functions will demand that your data be structured coorrectly to fit into the key-value pairs. Horizontal rows should be observations with the column as the value you are interested in analysing.
 
 ```{r}
-library(astime)
+
 ds1.table$time <- as.POSIXct(as.numeric(ds1.table$time), origin = "1960-01-01")
 ds1.table$elapsed <- as.numeric(ds1.table$elapsed)
 ds1.table$bytes <- as.numeric(ds1.table$bytes)
+sum(is.na(ds1.table))
+ds1.table <- ds1.table[!is.na(ds1.table)]
 
 ```
+This R code chunk converts from character vectors to time and numeric. During the conversion NAs will be introduced. We use the is.na function to identify and remove the NAs that were introduced. At this point we are ready to save the data for use later.
 
+```{r}
+saveRDS(ds1.table, '~/github/Lab-0---Exploring-Cyber-Datasets/Data/lab1.rds')
+```
+The code above saves your environment data and values in a compressed format. When exciting R Studion you will be asked if you wish to save your desktop you which should answer 'no'. Answering 'yes' will save anything you have in the evironment to .RData. Saving your desktop to .RData file that will load the next time you run R Studio. 
+This will prevent saving a large data structure to the .RData file.
 
+#Summary
+In this lab we:
 
-
++ Discovered that R errors should be evaluated in the context of what you are doing. R errors are not always evident as to what is throwing the error. You may need to comment out lines and rerun one line at a time until you find the offending line. Using a Google search with '[R]' in your query focuses the results on R language information which helps save time. 
++ Loaded a compressed file after creating a connection that allows you to access the compressed file. Cyber logs are text files made up of alphanueric characters. The file in is lab is approximately 23.1 megs and uncompresses to 220.1megs. Compressing a file save disk space, but the R programmer needs to consider memory implications. You can quickly determine a files uncompressed size by using gunzip -c <filename.gz> | wc --bytes. This will print out the decompressed value without uncompressing the file.  
++ Converted values into numeric values that can be analyzed. Part of being able to report on the variables in a dataset is being able to sum, count, average, etc. You need numeric values to perform basic statistic analysis.  
++ Saved the data to a compressed file for later use. Instead of saving the environment variables to .RData we saved to our own RDS file.
 
 #Endnotes
 [^1]: http://www.secrepo.com/
 [^2]: https://creativecommons.org/licenses/by/4.0/
 [^3]: http://visit.crowdflower.com/rs/416-ZBE-142/images/CrowdFlower_DataScienceReport_2016.pdf
+
+#Contact Information
+https://www.linkedin.com/in/brian-thomas-ph-d-pmp-b113381/ 
