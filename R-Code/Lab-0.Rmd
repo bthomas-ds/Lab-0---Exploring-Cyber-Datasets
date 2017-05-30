@@ -32,9 +32,14 @@ Notice the errors that are output after the code block.
 ```{r}
 # Method 1a - Retrieve the data from a web link and store in a variable
 #Clean up the environment
-rm(list=ls())
-ds1 <- read.table('http://www.secrepo.com/squid/access.log.gz', header = TRUE)
+# rm(list=ls())
+# ds1 <- read.table('http://www.secrepo.com/squid/access.log.gz', header = TRUE)
 ```
+The commented out code block throws an error when run:
+line 1 appears to contain embedded nullsline 5 appears to contain embedded nulls
+ Show Traceback
+Error in make.names(col.names, unique = TRUE) : invalid multibyte string 1
+
 R throws an error stating that file contains embedded nulls. The problem is not the nulls as the file type is a gzip compressed file. You can determine that it is a compressed file as file ends in .gz. We will need use the R function gzfile to open a connection to the gz file. We can then read connection using read.table. This will present another problem in getting the data. Line 82,947 does not have ten elements in the row. You can open the file in your favorite text editor and read the line.
 
 image ![](/home/bthomas/Pictures/Screenshot from 2017-04-30 17-22-38.png)
@@ -46,11 +51,7 @@ Notice how alphanumerics flow down the left side of the page with whitespace del
 # Method 1b - Retrieve the data from a web link and store in a variable
 #Clean up the environment
 rm(list=ls())
-# setwd('/home/bthomas/github/Lab-0---Exploring-Cyber-Datasets/Data')
-#root.dir <- "/home/bthomas/github/Lab-0---Exploring-Cyber-Datasets/Data"
-#knitr::opts_knit$set(root.dir = "/home/bthomas/github/Lab-0---Exploring-Cyber-Datasets/Data")
 ds1 <- gzfile('~/github/Lab-0---Exploring-Cyber-Datasets/Data/access.log.gz')
-# ds1.table <- read.table('~/Documents/Lab 0 - Plotting Activity/Data/access.log', fill = TRUE)
 ds1.table <- read.table(ds1, fill = TRUE, stringsAsFactors = FALSE)
 colnames(ds1.table)<- c("time", "elapsed", "remotehost", "code/status", "bytes", "method", "URL", "rfc931", "peerstatus/peerhost","type")
 
